@@ -1,0 +1,18 @@
+{
+  "name": "poubelle-panic",
+  "version": "1.0.0",
+  "description": "Un jeu éducatif et amusant sur le tri sélectif développé avec Three.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "three.js",
+    "game",
+    "recycling",
+    "education",
+    "hackathon"
+  ],
+  "author": "Poubelle Panic Team",
+  "license": "MIT"
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éco-Responsable - Prévention du gaspillage alimentaire</title>
+    <meta name="description" content="Site de prévention contre le gaspillage alimentaire et promotion du tri sélectif">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Écran de chargement -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <h1>Éco-Responsable</h1>
+            <div class="loading-animation">
+                <div class="food-item apple"></div>
+                <div class="food-item banana"></div>
+                <div class="food-item carrot"></div>
+                <div class="food-item milk"></div>
+                <div class="food-item bread"></div>
+            </div>
+            <p>Chargement en cours...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-leaf logo-icon"></i>
+                <h1>Éco-Responsable</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">Accueil</a></li>
+                <li><a href="#prevention">Prévention</a></li>
+                <li><a href="#ressources">Ressources</a></li>
+                <li><a href="#jeu">Jeu</a></li>
+                <li><a href="guide.html">Guide</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Section Héro -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <img src="images/hero-image.jpg" alt="Illustration de prévention du gaspillage alimentaire">
+            <div class="hero-text">
+                <h2>Ensemble, luttons contre le gaspillage alimentaire</h2>
+                <p>Chaque année, des millions de tonnes de nourriture sont gaspillées dans le monde. Découvrez comment vous pouvez contribuer à réduire ce gaspillage et adopter des pratiques de tri sélectif efficaces.</p>
+                <a href="#prevention" class="cta-button">En savoir plus</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Prévention -->
+    <section id="prevention" class="prevention">
+        <div class="container">
+            <h2><i class="fas fa-seedling section-icon"></i> Prévention du gaspillage alimentaire</h2>
+            <div class="prevention-content">
+                <div class="prevention-text">
+                    <p>Le gaspillage alimentaire représente un enjeu majeur pour notre société et notre environnement. En France, près de 10 millions de tonnes de nourriture consommable sont jetées chaque année, soit l'équivalent de 150 kg par habitant.</p>
+                    <p>Voici quelques conseils pour réduire votre impact :</p>
+                    <ul>
+                        <li>Planifiez vos repas et n'achetez que ce dont vous avez besoin</li>
+                        <li>Vérifiez les dates de péremption et faites la différence entre "à consommer jusqu'au" et "à consommer de préférence avant"</li>
+                        <li>Stockez correctement vos aliments pour prolonger leur durée de vie</li>
+                        <li>Apprenez à cuisiner les restes et à transformer les aliments moins frais</li>
+                        <li>Compostez vos déchets organiques quand c'est possible</li>
+                    </ul>
+                    <p>En adoptant ces gestes simples, vous contribuez à préserver les ressources de notre planète tout en réalisant des économies substantielles sur votre budget alimentaire.</p>
+                    <a href="guide.html" class="cta-button">Consulter notre guide complet</a>
+                </div>
+                <div class="prevention-image">
+                    <div class="image-container">
+                        <i class="fas fa-seedling eco-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Ressources -->
+    <section id="ressources" class="ressources">
+        <div class="container">
+            <h2><i class="fas fa-book-open section-icon"></i> Ressources utiles</h2>
+            <div class="ressources-grid">
+                <a href="https://www.ademe.fr/expertises/dechets/passer-a-laction/eviter-production-dechets/dossier/reduire-gaspillage-alimentaire/enjeux" class="ressource-card" target="_blank">
+                    <i class="fas fa-book"></i>
+                    <h3>ADEME</h3>
+                    <p>Guides et conseils de l'Agence de la transition écologique pour réduire le gaspillage alimentaire.</p>
+                </a>
+                <a href="https://www.toogoodtogo.fr/fr" class="ressource-card" target="_blank">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Too Good To Go</h3>
+                    <p>Application mobile qui permet de sauver des invendus alimentaires à prix réduits.</p>
+                </a>
+                <a href="https://www.ecologie.gouv.fr/gaspillage-alimentaire-0" class="ressource-card" target="_blank">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Ministère de l'Écologie</h3>
+                    <p>Informations officielles et réglementations sur la lutte contre le gaspillage alimentaire.</p>
+                </a>
+                <a href="https://www.consoglobe.com/tri-selectif-recyclage-cg" class="ressource-card" target="_blank">
+                    <i class="fas fa-recycle"></i>
+                    <h3>ConsoGlobe</h3>
+                    <p>Conseils pratiques pour un tri sélectif efficace et des astuces pour recycler au quotidien.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Jeu -->
+    <section id="jeu" class="game-section">
+        <div class="container">
+            <h2><i class="fas fa-gamepad section-icon"></i> Poubelle Panic - Le jeu du tri</h2>
+            <div class="game-intro">
+                <p>Testez vos connaissances en matière de tri et de gestion des déchets alimentaires avec notre jeu interactif. Glissez-déposez les déchets dans les bonnes poubelles et maximisez votre score écologique !</p>
+            </div>
+            
+            <div class="game-preview">
+                <img src="images/game-preview.jpg" alt="Aperçu du jeu Poubelle Panic" class="preview-image">
+                <div class="game-description">
+                    <h3>Apprenez en vous amusant !</h3>
+                    <p>Dans Poubelle Panic, votre mission est de trier correctement les déchets dans les bonnes poubelles :</p>
+                    <ul>
+                        <li>Poubelle bleue pour les déchets non-recyclables</li>
+                        <li>Poubelle jaune pour les déchets recyclables</li>
+                        <li>Poubelle marron pour les déchets alimentaires</li>
+                        <li>Réfrigérateur pour les aliments frais</li>
+                        <li>Placard pour les aliments non-périssables</li>
+                    </ul>
+                    <p>Chaque bon placement vous rapporte des points, tandis que chaque erreur vous en fait perdre. Le jeu s'arrête quand votre score tombe à zéro.</p>
+                    <a href="jeu.html" class="cta-button">Jouer maintenant</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Éco-Responsable</h3>
+                    <p>Ensemble pour un avenir plus durable et responsable.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Liens rapides</h4>
+                    <ul>
+                        <li><a href="#hero">Accueil</a></li>
+                        <li><a href="#prevention">Prévention</a></li>
+                        <li><a href="#ressources">Ressources</a></li>
+                        <li><a href="#jeu">Jeu</a></li>
+                        <li><a href="guide.html">Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>Pour toute question ou suggestion, n'hésitez pas à nous contacter.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Éco-Responsable. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/textures.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
