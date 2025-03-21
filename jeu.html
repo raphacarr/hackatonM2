@@ -273,5 +273,53 @@
         });
     </script>
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM entièrement chargé");
+            
+            // Vérifier si Three.js est chargé
+            if (typeof THREE === 'undefined') {
+                console.error("THREE.js n'est pas chargé !");
+                alert("Erreur: THREE.js n'est pas chargé. Veuillez rafraîchir la page.");
+            } else {
+                console.log("THREE.js est chargé correctement");
+            }
+            
+            // Vérifier si GSAP est chargé
+            if (typeof gsap === 'undefined') {
+                console.error("GSAP n'est pas chargé !");
+                alert("Erreur: GSAP n'est pas chargé. Veuillez rafraîchir la page.");
+            } else {
+                console.log("GSAP est chargé correctement");
+            }
+            
+            // Vérifier si les fonctions du jeu sont disponibles
+            if (typeof initGame === 'undefined') {
+                console.error("La fonction initGame n'est pas définie !");
+                alert("Erreur: La fonction initGame n'est pas définie. Veuillez rafraîchir la page.");
+            } else {
+                console.log("La fonction initGame est définie correctement");
+            }
+            
+            // Vérifier si les gestionnaires d'événements sont configurés
+            const startButton = document.getElementById('start-button');
+            if (startButton) {
+                console.log("Bouton 'Commencer à jouer' trouvé, ajout d'un gestionnaire d'événements de débogage");
+                startButton.addEventListener('click', function() {
+                    console.log("Bouton 'Commencer à jouer' cliqué (gestionnaire de débogage)");
+                });
+            } else {
+                console.error("Bouton 'Commencer à jouer' non trouvé !");
+            }
+            
+            // Vérifier si setupGamePageInteractions est défini
+            if (typeof setupGamePageInteractions === 'function') {
+                console.log("La fonction setupGamePageInteractions est définie");
+                setupGamePageInteractions();
+            } else {
+                console.error("La fonction setupGamePageInteractions n'est pas définie !");
+            }
+        });
+    </script>
 </body>
 </html>

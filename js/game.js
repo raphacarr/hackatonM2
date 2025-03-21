@@ -1,5 +1,89 @@
 // game.js - Main game logic for Poubelle Panic
 
+// Fonction d'initialisation explicite pour le jeu
+function initGame() {
+    console.log("Initialisation du jeu depuis la fonction initGame");
+    
+    // Réinitialiser les variables de jeu
+    score = 0;
+    wasteItems = [];
+    itemsInScene = 0;
+    
+    // Mettre à jour l'affichage du score
+    if (scoreElement) {
+        scoreElement.textContent = score;
+    }
+    
+    // Initialiser les sons
+    initSounds();
+    
+    // Initialiser la scène 3D
+    init();
+    
+    // Ajouter les poubelles
+    createBins();
+    
+    // Ajouter les conteneurs (frigo et placard)
+    createContainers();
+    
+    // Ajouter les gestionnaires d'événements
+    addEventListeners();
+    
+    // Démarrer le jeu
+    startGame();
+}
+
+// Fonction pour redémarrer le jeu
+function restartGame() {
+    console.log("Redémarrage du jeu");
+    
+    // Nettoyer la scène
+    cleanupScene();
+    
+    // Réinitialiser les variables
+    score = 0;
+    wasteItems = [];
+    itemsInScene = 0;
+    
+    // Mettre à jour l'affichage du score
+    if (scoreElement) {
+        scoreElement.textContent = score;
+    }
+    
+    // Recréer les poubelles
+    createBins();
+    
+    // Recréer les conteneurs
+    createContainers();
+    
+    // Activer le jeu
+    gameActive = true;
+    
+    // Masquer l'écran de fin de jeu
+    if (gameOverScreen) {
+        gameOverScreen.classList.add('hidden');
+    }
+    
+    // Afficher le conteneur de jeu
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) {
+        gameContainer.classList.remove('hidden');
+    }
+}
+
+// Fonction pour nettoyer la scène
+function cleanupScene() {
+    // Supprimer tous les objets de la scène sauf la caméra et les lumières
+    while(scene.children.length > 0) { 
+        const object = scene.children[0];
+        if (object.type === 'PerspectiveCamera' || object.type === 'AmbientLight' || object.type === 'DirectionalLight') {
+            scene.children.shift(); // Passer au prochain objet sans supprimer
+        } else {
+            scene.remove(object); 
+        }
+    }
+}
+
 // Game variables
 let scene, camera, renderer;
 let wasteItems = [];
@@ -99,30 +183,6 @@ function playSound(type) {
             console.log(`Error playing sound: ${e.message}`);
         }
     }
-}
-
-// Initialize the game
-function initGame() {
-    console.log("Initialisation du jeu");
-    
-    // Réinitialiser les variables de jeu
-    score = 0;
-    wasteItems = [];
-    itemsInScene = 0;
-    
-    // Mettre à jour l'affichage du score
-    if (scoreElement) {
-        scoreElement.textContent = score;
-    }
-    
-    // Initialiser la scène 3D
-    init();
-    
-    // Initialiser les sons
-    initSounds();
-    
-    // Démarrer le jeu
-    startGame();
 }
 
 // Initialize the game scene
@@ -249,6 +309,69 @@ function createBins() {
     const cabinet = createContainer('cabinet');
     cabinet.position.set(startX + 4 * spacing, 0, 0);
     cabinet.scale.set(binScale, binScale, binScale);
+    scene.add(cabinet);
+    bins.push(cabinet);
+}
+
+// Fonction pour créer les conteneurs (frigo et placard)
+function createContainers() {
+    console.log("Création des conteneurs (frigo et placard)");
+    
+    // Créer le frigo (pour aliments frais)
+    const fridgeGeometry = new THREE.BoxGeometry(1.2, 2, 1);
+    const fridgeMaterial = new THREE.MeshPhongMaterial({ color: 0xecf0f1 });
+    const fridge = new THREE.Mesh(fridgeGeometry, fridgeMaterial);
+    fridge.position.set(3, 1, -3);
+    fridge.userData = { type: 'container', containerType: 'fridge', acceptedTypes: ['food'], acceptedFoodTypes: ['fresh'] };
+    
+    // Ajouter une porte au frigo
+    const doorGeometry = new THREE.BoxGeometry(1.1, 1.9, 0.1);
+    const doorMaterial = new THREE.MeshPhongMaterial({ color: 0xbdc3c7 });
+    const door = new THREE.Mesh(doorGeometry, doorMaterial);
+    door.position.set(0, 0, 0.5);
+    fridge.add(door);
+    
+    // Ajouter une poignée
+    const handleGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
+    const handleMaterial = new THREE.MeshPhongMaterial({ color: 0x7f8c8d });
+    const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+    handle.position.set(-0.4, 0, 0.6);
+    fridge.add(handle);
+    
+    // Ajouter un texte "Frigo"
+    const fridgeLabel = createTextLabel("Frigo", 0x2ecc71);
+    fridgeLabel.position.set(0, 1.5, 0);
+    fridge.add(fridgeLabel);
+    
+    scene.add(fridge);
+    bins.push(fridge);
+    
+    // Créer le placard (pour aliments non-périssables)
+    const cabinetGeometry = new THREE.BoxGeometry(1.2, 1.5, 1);
+    const cabinetMaterial = new THREE.MeshPhongMaterial({ color: 0xd35400 });
+    const cabinet = new THREE.Mesh(cabinetGeometry, cabinetMaterial);
+    cabinet.position.set(5, 0.75, -3);
+    cabinet.userData = { type: 'container', containerType: 'cabinet', acceptedTypes: ['food'], acceptedFoodTypes: ['non-perishable'] };
+    
+    // Ajouter une porte au placard
+    const cabinetDoorGeometry = new THREE.BoxGeometry(1.1, 1.4, 0.1);
+    const cabinetDoorMaterial = new THREE.MeshPhongMaterial({ color: 0xe67e22 });
+    const cabinetDoor = new THREE.Mesh(cabinetDoorGeometry, cabinetDoorMaterial);
+    cabinetDoor.position.set(0, 0, 0.5);
+    cabinet.add(cabinetDoor);
+    
+    // Ajouter une poignée
+    const cabinetHandleGeometry = new THREE.BoxGeometry(0.1, 0.3, 0.1);
+    const cabinetHandleMaterial = new THREE.MeshPhongMaterial({ color: 0x7f8c8d });
+    const cabinetHandle = new THREE.Mesh(cabinetHandleGeometry, cabinetHandleMaterial);
+    cabinetHandle.position.set(-0.4, 0, 0.6);
+    cabinet.add(cabinetHandle);
+    
+    // Ajouter un texte "Placard"
+    const cabinetLabel = createTextLabel("Placard", 0xe67e22);
+    cabinetLabel.position.set(0, 1.2, 0);
+    cabinet.add(cabinetLabel);
+    
     scene.add(cabinet);
     bins.push(cabinet);
 }
@@ -777,9 +900,6 @@ function startGame() {
     // Activer le jeu
     gameActive = true;
     
-    // Créer les poubelles
-    createBins();
-    
     // Démarrer l'animation
     animate(0);
     
@@ -791,11 +911,20 @@ function startGame() {
     }, 3000);
 }
 
-// Restart the game
-function restartGame() {
-    gameOverScreen.classList.add('hidden');
-    document.getElementById('game-container').classList.remove('hidden');
-    startGame();
+// Spawn waste items
+function spawnWasteItem() {
+    if (!gameActive || itemsInScene >= maxItems) return;
+    
+    // Créer un nouvel objet déchet
+    const wasteType = getRandomWasteType();
+    const wasteItem = createWasteItem(wasteType);
+    
+    // Ajouter l'objet à la scène
+    scene.add(wasteItem);
+    wasteItems.push(wasteItem);
+    itemsInScene++;
+    
+    console.log(`Objet créé: ${wasteType.name}, Total: ${itemsInScene}`);
 }
 
 // Game over
@@ -850,24 +979,12 @@ function gameOver() {
         restartBtn.style.border = 'none';
         restartBtn.style.borderRadius = '5px';
         restartBtn.style.cursor = 'pointer';
-        restartBtn.style.marginBottom = '1rem';
-        restartBtn.onclick = restartGame;
         
-        const homeBtn = document.createElement('button');
-        homeBtn.textContent = 'Retour à l\'accueil';
-        homeBtn.style.padding = '1rem 2rem';
-        homeBtn.style.fontSize = '1.5rem';
-        homeBtn.style.backgroundColor = '#3498db';
-        homeBtn.style.color = 'white';
-        homeBtn.style.border = 'none';
-        homeBtn.style.borderRadius = '5px';
-        homeBtn.style.cursor = 'pointer';
-        homeBtn.onclick = () => { window.location.href = 'index.html'; };
+        restartBtn.addEventListener('click', restartGame);
         
         newGameOverDiv.appendChild(gameOverTitle);
         newGameOverDiv.appendChild(scoreText);
         newGameOverDiv.appendChild(restartBtn);
-        newGameOverDiv.appendChild(homeBtn);
         
         document.body.appendChild(newGameOverDiv);
     }
@@ -879,131 +996,6 @@ function gameOver() {
 // Update the score display
 function updateScore() {
     scoreElement.textContent = score;
-}
-
-// Spawn a new item (alias pour spawnWasteItem pour compatibilité)
-function spawnItem() {
-    return spawnWasteItem();
-}
-
-// Spawn a new waste item
-function spawnWasteItem() {
-    if (itemsInScene >= maxItems) return null;
-    
-    const wasteItem = createRandomWasteItem();
-    
-    // Position randomly along the x-axis
-    const xPos = (Math.random() * 8) - 4;
-    
-    // Start above the screen
-    wasteItem.position.set(xPos, 10, 0);
-    
-    // Supprimer l'offset aléatoire pour le mouvement horizontal
-    wasteItem.userData.randomOffset = 0;
-    
-    // Add to scene and track
-    scene.add(wasteItem);
-    wasteItems.push(wasteItem);
-    itemsInScene++;
-    
-    return wasteItem;
-}
-
-// Create a random waste item
-function createRandomWasteItem() {
-    const itemTypes = [
-        { type: 'waste', wasteType: 'recyclable', points: 5 },
-        { type: 'waste', wasteType: 'non-recyclable', points: 5 },
-        { type: 'waste', wasteType: 'food-waste', points: 5 },
-        { type: 'food', foodType: 'fresh', points: 10 },
-        { type: 'food', foodType: 'non-perishable', points: 10 }
-    ];
-    
-    const randomType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
-    let item;
-    
-    if (randomType.type === 'waste') {
-        // Pour les déchets
-        switch (randomType.wasteType) {
-            case 'recyclable':
-                // Créer un objet recyclable simple (cube jaune)
-                const recycleGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-                const recycleMaterial = new THREE.MeshPhongMaterial({ color: 0xf1c40f });
-                item = new THREE.Mesh(recycleGeometry, recycleMaterial);
-                break;
-            case 'non-recyclable':
-                // Créer un objet non-recyclable simple (cube bleu)
-                const nonRecycleGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-                const nonRecycleMaterial = new THREE.MeshPhongMaterial({ color: 0x3498db });
-                item = new THREE.Mesh(nonRecycleGeometry, nonRecycleMaterial);
-                break;
-            case 'food-waste':
-                // Créer un déchet alimentaire simple (sphère marron)
-                const foodWasteGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-                const foodWasteMaterial = new THREE.MeshPhongMaterial({ color: 0x8b4513 });
-                item = new THREE.Mesh(foodWasteGeometry, foodWasteMaterial);
-                break;
-            default:
-                // Fallback
-                const defaultGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-                const defaultMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
-                item = new THREE.Mesh(defaultGeometry, defaultMaterial);
-        }
-        
-        item.userData = { 
-            type: 'waste', 
-            wasteType: randomType.wasteType, 
-            points: randomType.points 
-        };
-    } else {
-        // C'est un aliment
-        switch (randomType.foodType) {
-            case 'fresh':
-                // Créer un aliment frais simple (sphère verte)
-                const freshGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-                const freshMaterial = new THREE.MeshPhongMaterial({ color: 0x2ecc71 });
-                item = new THREE.Mesh(freshGeometry, freshMaterial);
-                break;
-            case 'non-perishable':
-                // Créer un aliment non-périssable simple (cylindre orange)
-                const nonPerishableGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.6, 16);
-                const nonPerishableMaterial = new THREE.MeshPhongMaterial({ color: 0xe67e22 });
-                item = new THREE.Mesh(nonPerishableGeometry, nonPerishableMaterial);
-                break;
-            default:
-                // Fallback
-                const defaultGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-                const defaultMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
-                item = new THREE.Mesh(defaultGeometry, defaultMaterial);
-        }
-        
-        item.userData = { 
-            type: 'food', 
-            foodType: randomType.foodType, 
-            points: randomType.points 
-        };
-    }
-    
-    // Add shadow casting
-    item.castShadow = true;
-    
-    return item;
-}
-
-// Remove a waste item from the scene
-function removeWasteItem(item) {
-    const index = wasteItems.indexOf(item);
-    if (index !== -1) {
-        wasteItems.splice(index, 1);
-        scene.remove(item);
-        itemsInScene--;
-        
-        // If the removed item was selected, reset selection
-        if (index === selectedItemIndex) {
-            selectedItemIndex = wasteItems.length > 0 ? 0 : -1;
-            highlightSelectedItem();
-        }
-    }
 }
 
 // Animation loop
