@@ -238,42 +238,74 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="js/textures.js"></script>
     <script src="js/models.js"></script>
     <script src="js/game.js"></script>
     <script>
-        // Vérifier si le document est complètement chargé
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM entièrement chargé");
+        // Fonction pour configurer les interactions de la page de jeu
+        function setupGamePageInteractions() {
+            console.log("Configuration des interactions de la page de jeu");
             
-            // Vérifier si Three.js est chargé
-            if (typeof THREE === 'undefined') {
-                console.error("Three.js n'est pas chargé !");
-                alert("Erreur de chargement de Three.js. Veuillez rafraîchir la page.");
-            } else {
-                console.log("Three.js est chargé correctement");
+            const startButton = document.getElementById('start-button');
+            const playButton = document.getElementById('play-button');
+            const restartButton = document.getElementById('restart-button');
+            const instructionsScreen = document.getElementById('game-instructions');
+            const startScreen = document.getElementById('start-screen');
+            const gameContainer = document.getElementById('game-container');
+            const gameOverScreen = document.getElementById('game-over-screen');
+            
+            if (!startButton || !instructionsScreen || !startScreen) {
+                console.error("Éléments d'interface manquants pour la configuration du jeu");
+                return;
             }
             
-            // Vérifier si GSAP est chargé
-            if (typeof gsap === 'undefined') {
-                console.error("GSAP n'est pas chargé !");
-                alert("Erreur de chargement de GSAP. Veuillez rafraîchir la page.");
-            } else {
-                console.log("GSAP est chargé correctement");
+            // Gestionnaire pour le bouton "Commencer à jouer"
+            startButton.addEventListener('click', () => {
+                console.log("Bouton Commencer à jouer cliqué");
+                instructionsScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+            });
+            
+            // Gestionnaire pour le bouton "Jouer"
+            if (playButton) {
+                playButton.addEventListener('click', () => {
+                    console.log("Bouton Jouer cliqué");
+                    startScreen.classList.add('hidden');
+                    gameContainer.classList.remove('hidden');
+                    
+                    // S'assurer que le conteneur de jeu est visible
+                    gameContainer.style.display = 'block';
+                    
+                    // Démarrer le jeu si la fonction existe
+                    if (typeof initGame === 'function') {
+                        console.log("Initialisation du jeu...");
+                        initGame();
+                    } else {
+                        console.error("La fonction initGame n'existe pas");
+                    }
+                });
             }
             
-            // Initialiser le jeu si tout est chargé
-            if (typeof initGame === 'function') {
-                console.log("Fonction initGame trouvée, initialisation du jeu...");
-                initGame();
-            } else {
-                console.error("La fonction initGame n'est pas définie !");
-                alert("Erreur de chargement du jeu. Veuillez rafraîchir la page.");
+            // Gestionnaire pour le bouton "Rejouer"
+            if (restartButton) {
+                restartButton.addEventListener('click', () => {
+                    console.log("Bouton Rejouer cliqué");
+                    gameOverScreen.classList.add('hidden');
+                    gameContainer.classList.remove('hidden');
+                    
+                    // Redémarrer le jeu si la fonction existe
+                    if (typeof restartGame === 'function') {
+                        console.log("Redémarrage du jeu...");
+                        restartGame();
+                    } else {
+                        console.error("La fonction restartGame n'existe pas");
+                    }
+                });
             }
-        });
-    </script>
-    <script src="js/main.js"></script>
-    <script>
+        }
+        
+        // Attendre que le DOM soit chargé
         document.addEventListener('DOMContentLoaded', function() {
             console.log("DOM entièrement chargé");
             
@@ -312,14 +344,10 @@
                 console.error("Bouton 'Commencer à jouer' non trouvé !");
             }
             
-            // Vérifier si setupGamePageInteractions est défini
-            if (typeof setupGamePageInteractions === 'function') {
-                console.log("La fonction setupGamePageInteractions est définie");
-                setupGamePageInteractions();
-            } else {
-                console.error("La fonction setupGamePageInteractions n'est pas définie !");
-            }
+            // Configurer les interactions de la page
+            setupGamePageInteractions();
         });
     </script>
+    <script src="js/main.js"></script>
 </body>
 </html>

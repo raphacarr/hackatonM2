@@ -119,47 +119,53 @@ const sounds = {
     gameOver: null
 };
 
-// Initialiser les sons avec gestion d'erreur
+// Initialize sound effects
 function initSounds() {
+    console.log("Initialisation des sons...");
+    
+    // Créer des objets Audio pour chaque son
     try {
-        console.log("Initialisation des sons...");
-        
-        // Créer des éléments audio temporaires pour vérifier si les fichiers existent
-        const testGoodSound = new Audio('sounds/good_catch.mp3');
-        const testBadSound = new Audio('sounds/bad_catch.mp3');
-        const testGameOverSound = new Audio('sounds/game_over.mp3');
-        
-        // Ajouter des écouteurs d'événements pour gérer les erreurs
-        testGoodSound.addEventListener('error', () => {
-            console.warn("Le fichier audio good_catch.mp3 n'a pas pu être chargé.");
-        });
-        
-        testBadSound.addEventListener('error', () => {
-            console.warn("Le fichier audio bad_catch.mp3 n'a pas pu être chargé.");
-        });
-        
-        testGameOverSound.addEventListener('error', () => {
-            console.warn("Le fichier audio game_over.mp3 n'a pas pu être chargé.");
-        });
-        
-        // Initialiser les sons
-        sounds.goodPlacement = testGoodSound;
-        sounds.badPlacement = testBadSound;
-        sounds.gameOver = testGameOverSound;
+        // Utiliser des chemins relatifs pour les sons
+        sounds = {
+            goodPlacement: new Audio('sounds/good_catch.mp3'),
+            badPlacement: new Audio('sounds/bad_catch.mp3'),
+            gameOver: new Audio('sounds/game_over.mp3')
+        };
         
         // Précharger les sons
-        for (const key in sounds) {
-            if (sounds[key]) {
-                sounds[key].load();
+        for (const [key, sound] of Object.entries(sounds)) {
+            sound.addEventListener('canplaythrough', () => {
                 console.log(`Son ${key} chargé avec succès.`);
-            }
+            });
+            
+            sound.addEventListener('error', (e) => {
+                console.error(`Le fichier audio ${key} n'a pas pu être chargé.`, e);
+                // Créer un son de remplacement silencieux
+                sounds[key] = {
+                    play: function() { 
+                        console.log(`Lecture silencieuse de ${key} (son non disponible)`);
+                    }
+                };
+            });
+            
+            // Définir le volume
+            sound.volume = 0.5;
+            
+            // Forcer le préchargement
+            sound.load();
         }
-    } catch (e) {
-        console.error("Erreur lors de l'initialisation des sons:", e);
+    } catch (error) {
+        console.error("Erreur lors de l'initialisation des sons:", error);
+        // Créer des sons silencieux en cas d'erreur
+        sounds = {
+            goodPlacement: { play: function() { console.log("Son silencieux (goodPlacement)"); } },
+            badPlacement: { play: function() { console.log("Son silencieux (badPlacement)"); } },
+            gameOver: { play: function() { console.log("Son silencieux (gameOver)"); } }
+        };
     }
 }
 
-// Fonction pour jouer les sons avec gestion d'erreur
+// Play a sound effect
 function playSound(type) {
     console.log(`Playing ${type} sound`);
     
@@ -174,8 +180,7 @@ function playSound(type) {
     if (sounds[type]) {
         try {
             // Créer une nouvelle instance pour éviter les problèmes de lecture multiple
-            const sound = sounds[type].cloneNode();
-            sound.volume = 0.5;
+            const sound = sounds[type];
             sound.play().catch(err => {
                 console.log(`Error playing sound: ${err.message}`);
             });
@@ -374,6 +379,33 @@ function createContainers() {
     
     scene.add(cabinet);
     bins.push(cabinet);
+}
+
+// Fonction pour créer un label texte
+function createTextLabel(text, color) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 128;
+    const context = canvas.getContext('2d');
+    
+    // Fond transparent
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Texte
+    context.font = 'Bold 24px Arial';
+    context.textAlign = 'center';
+    context.fillStyle = '#' + color.toString(16).padStart(6, '0');
+    context.fillText(text, canvas.width / 2, canvas.height / 2);
+    
+    // Créer une texture à partir du canvas
+    const texture = new THREE.CanvasTexture(canvas);
+    const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+    const sprite = new THREE.Sprite(material);
+    
+    // Ajuster l'échelle du sprite
+    sprite.scale.set(2, 1, 1);
+    
+    return sprite;
 }
 
 // Create a bin with the specified color and type

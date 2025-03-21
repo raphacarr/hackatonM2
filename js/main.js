@@ -43,36 +43,51 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Animation des éléments de la page après le chargement
     function animatePageElements() {
-        // Animation du titre et du texte de la section héro
-        gsap.from('.hero-text h2', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 0.3
-        });
+        // Vérifier si GSAP est disponible
+        if (typeof gsap === 'undefined') {
+            console.error("GSAP n'est pas disponible pour les animations");
+            return;
+        }
         
-        gsap.from('.hero-text p', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 0.6
-        });
+        // Vérifier si nous sommes sur la page d'accueil
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            // Animation du texte du héros
+            gsap.from('.hero-text h2', { opacity: 0, y: -50, duration: 1, delay: 0.2 });
+            gsap.from('.hero-text p', { opacity: 0, y: -30, duration: 1, delay: 0.4 });
+            gsap.from('.hero-text .cta-button', { opacity: 0, y: -20, duration: 1, delay: 0.6 });
+        }
         
-        gsap.from('.hero-text .cta-button', {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            delay: 0.9
-        });
-        
-        // Configurer les animations de défilement
-        setupScrollAnimations();
+        // Configurer les animations au défilement si nous sommes sur la page d'accueil
+        try {
+            setupScrollAnimations();
+        } catch (error) {
+            console.error("Erreur lors de la configuration des animations au défilement:", error);
+        }
     }
     
-    // Configurer les animations basées sur le défilement
+    // Fonction pour configurer les animations au défilement
     function setupScrollAnimations() {
+        // Vérifier si GSAP est disponible
+        if (typeof gsap === 'undefined') {
+            console.error("GSAP n'est pas disponible pour les animations de défilement");
+            return;
+        }
+        
+        // Vérifier si nous sommes sur la page d'accueil
+        const preventionSection = document.getElementById('prevention');
+        if (!preventionSection) {
+            console.log("Section de prévention non trouvée, animations de défilement ignorées");
+            return;
+        }
+        
         // Enregistrer le plugin ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
+        if (typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+        } else {
+            console.error("Le plugin ScrollTrigger n'est pas disponible");
+            return;
+        }
         
         // Animation de la section de prévention
         gsap.from('#prevention h2', {
@@ -122,9 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 1
         });
         
-        gsap.from('.game-intro', {
+        gsap.from('.game-description', {
             scrollTrigger: {
-                trigger: '.game-intro',
+                trigger: '.game-description',
                 start: 'top 80%',
                 toggleActions: 'play none none none'
             },
@@ -134,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
             delay: 0.3
         });
         
-        gsap.from('.game-instructions', {
+        gsap.from('#start-button', {
             scrollTrigger: {
-                trigger: '.game-instructions',
+                trigger: '#start-button',
                 start: 'top 80%',
                 toggleActions: 'play none none none'
             },
