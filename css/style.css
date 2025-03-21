@@ -161,9 +161,9 @@ nav {
     color: white;
 }
 
-.logo-icon {
-    font-size: 1.8rem;
-    color: var(--accent);
+.logo-img {
+    width: 32px;
+    height: 32px;
     margin-right: 10px;
     animation: pulse 2s infinite;
 }
@@ -184,6 +184,8 @@ nav {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 1px;
+    color: white;
+    margin-bottom: 0;
 }
 
 .nav-links {
@@ -249,7 +251,7 @@ nav {
     height: 100%;
     background-image: url('../images/hero-image.jpg');
     background-size: cover;
-    background-position: center 30%;
+    background-position: center center;
     filter: brightness(0.7);
     z-index: -1;
 }
