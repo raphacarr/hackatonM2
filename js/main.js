@@ -110,30 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
             delay: 0.3
         });
         
-        // Animation de la section de ressources
-        gsap.from('#ressources h2', {
-            scrollTrigger: {
-                trigger: '#ressources',
-                start: 'top 80%',
-                toggleActions: 'play none none none'
-            },
-            opacity: 0,
-            y: 50,
-            duration: 1
-        });
-        
-        gsap.from('.ressource-card', {
-            scrollTrigger: {
-                trigger: '.ressources-grid',
-                start: 'top 80%',
-                toggleActions: 'play none none none'
-            },
-            opacity: 0,
-            y: 50,
-            duration: 0.8,
-            stagger: 0.2
-        });
-        
         // Animation de la section de jeu
         gsap.from('#jeu h2', {
             scrollTrigger: {

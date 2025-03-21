@@ -155,7 +155,6 @@
             <ul class="nav-links">
                 <li><a href="index.html#hero">Accueil</a></li>
                 <li><a href="index.html#prevention">Prévention</a></li>
-                <li><a href="index.html#ressources">Ressources</a></li>
                 <li><a href="index.html#jeu">Jeu</a></li>
                 <li><a href="guide.html">Guide</a></li>
             </ul>
@@ -242,6 +241,37 @@
     <script src="js/textures.js"></script>
     <script src="js/models.js"></script>
     <script src="js/game.js"></script>
+    <script>
+        // Vérifier si le document est complètement chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM entièrement chargé");
+            
+            // Vérifier si Three.js est chargé
+            if (typeof THREE === 'undefined') {
+                console.error("Three.js n'est pas chargé !");
+                alert("Erreur de chargement de Three.js. Veuillez rafraîchir la page.");
+            } else {
+                console.log("Three.js est chargé correctement");
+            }
+            
+            // Vérifier si GSAP est chargé
+            if (typeof gsap === 'undefined') {
+                console.error("GSAP n'est pas chargé !");
+                alert("Erreur de chargement de GSAP. Veuillez rafraîchir la page.");
+            } else {
+                console.log("GSAP est chargé correctement");
+            }
+            
+            // Initialiser le jeu si tout est chargé
+            if (typeof initGame === 'function') {
+                console.log("Fonction initGame trouvée, initialisation du jeu...");
+                initGame();
+            } else {
+                console.error("La fonction initGame n'est pas définie !");
+                alert("Erreur de chargement du jeu. Veuillez rafraîchir la page.");
+            }
+        });
+    </script>
     <script src="js/main.js"></script>
 </body>
 </html>
