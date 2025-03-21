@@ -4,7 +4,8 @@
   "description": "Un jeu éducatif et amusant sur le tri sélectif développé avec Three.js",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'No build step needed'"
   },
   "keywords": [
     "three.js",
@@ -14,5 +15,8 @@
     "hackathon"
   ],
   "author": "Poubelle Panic Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "netlify-cli": "^15.0.0"
+  }
 }
